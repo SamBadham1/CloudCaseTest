@@ -1,0 +1,58 @@
+<div class="container">
+  <pre></pre>
+  <form>
+    <div class="row">
+      <div class="col-3">
+        <div class="input-group mb-3">
+          <span class="input-group-text">%</span>
+
+          <div class="form-floating">
+            <input
+              type="text"
+              name="superannuation"
+              class="form-control"
+              placeholder="Superannuation"
+              id="superannuation"
+              [(ngModel)]="superRate"
+            />
+            <label for="superannuation">Superannuation</label>
+          </div>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="input-group mb-3">
+          <span class="input-group-text">$</span>
+
+          <div class="form-floating">
+            <input
+              type="text"
+              name="salary"
+              class="form-control"
+              placeholder="Salary"
+              id="salary"
+              [(ngModel)]="salary"
+            />
+            <label for="salary">Salary</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Amount taxed</th>
+        <th scope="col">Amount into super</th>
+        <th scope="col">Take home pay</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>${{ calculateTax() }}</td>
+        <td>${{ calculateSuperannuation() }}</td>
+        <td>${{ salary - (calculateTax() + calculateSuperannuation()) }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
