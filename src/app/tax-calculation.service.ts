@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
+import { TAX_THRESHOLDs } from './taxes';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TaxService {
+  // Hard coded version to check my math
   calculateTax(salary: number) {
     let tax = 0;
     if (salary > 0) {
@@ -21,6 +23,36 @@ export class TaxService {
       return this.roundingAndFloat(tax);
     } else return 'N/A';
   }
+//Version that pulls from constants for future proofing
+  calculateTaxFromStoredValues(salary: number) {
+    //Sort by lowest to highest
+    TAX_THRESHOLDs.sort((a, b) => a.threshold - b.threshold);
+
+    let tax = 0;
+    if (salary > 0) {
+      for (let i = 1; i < TAX_THRESHOLDs.length; i++) {
+        const { threshold: prevThreshold, rate: prevRate } =
+          TAX_THRESHOLDs[i - 1];
+        const { threshold, rate } = TAX_THRESHOLDs[i];
+
+        if (salary <= threshold) {
+          tax += (salary - prevThreshold) * prevRate;
+          return this.roundingAndFloat(tax);
+        } else {
+          tax += (threshold - prevThreshold) * prevRate;
+        }
+      }
+
+      // For salary exceeding the last threshold
+      const { threshold: lastThreshold, rate: lastRate } =
+        TAX_THRESHOLDs[TAX_THRESHOLDs.length - 1];
+      tax += (salary - lastThreshold) * lastRate;
+      return this.roundingAndFloat(tax);
+    } else {
+      return 'N/A';
+    }
+  }
+
 
   calculateSuperannuation(salary: number, superRate: number) {
     if (superRate > -1 && superRate < 101) {

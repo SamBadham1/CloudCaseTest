@@ -20,7 +20,7 @@ describe('TaxCalculationService', () => {
     const expectedTax = 63097; // Expected tax based on provided calculation
 
     // Call the function to be tested
-    const calculatedTax = service.calculateTax(salary);
+    const calculatedTax = service.calculateTaxFromStoredValues(salary);
 
     // Assert that the calculated tax matches the expected tax
     expect(calculatedTax).toEqual(expectedTax);
